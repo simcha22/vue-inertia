@@ -41,6 +41,12 @@ class HandleInertiaRequests extends Middleware
                 ]);
             },
             'status' => session('status'),
+            'cart'   => session('cart', [
+                'items'           => [],
+                'total'           => 0,
+                'restaurant_name' => '',
+                'restaurant_id'   => '',
+            ]),
 
         ]);
     }
