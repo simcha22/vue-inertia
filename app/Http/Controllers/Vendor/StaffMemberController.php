@@ -17,7 +17,11 @@ class StaffMemberController extends Controller
 {
     public function index(): Response
     {
-        return Inertia::render('Vendor/Staff/Show');
+        $this->authorize('user.viewAny');
+
+        return Inertia::render('Vendor/Staff/Show', [
+            'staff' => auth()->user()->restaurant->staff,
+        ]);
     }
 
     public function store(StoreStaffMemberRequest $request): RedirectResponse
@@ -27,8 +31,8 @@ class StaffMemberController extends Controller
 
         $member = DB::transaction(function () use ($attributes, $restaurant) {
             $user = $restaurant->staff()->create([
-                'name'     => $attributes['name'],
-                'email'    => $attributes['email'],
+                'name' => $attributes['name'],
+                'email' => $attributes['email'],
                 'password' => '',
             ]);
 
@@ -38,6 +42,19 @@ class StaffMemberController extends Controller
         });
 
         $member->notify(new RestaurantStaffInvitation($restaurant->name));
+
+        return back();
+    }
+
+    public function destroy($staffMemberId)
+    {
+        $this->authorize('user.delete');
+
+        $restaurant = auth()->user()->restaurant;
+        $member = $restaurant->staff()->findOrFail($staffMemberId);
+
+        $member->roles()->sync([]);
+        $member->delete();
 
         return back();
     }
