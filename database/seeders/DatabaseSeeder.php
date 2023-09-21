@@ -28,9 +28,10 @@ class DatabaseSeeder extends Seeder
 
     public function seedDemoRestaurants()
     {
-        $products   = Product::factory(7);
+        $products = Product::factory(7);
         $categories = Category::factory(5)->has($products, 'products');
-        $restaurant = Restaurant::factory()->has($categories);
+        $staffMember = User::factory()->staff();
+        $restaurant = Restaurant::factory()->has($categories)->has($staffMember, 'staff');
 
         User::factory(50)->vendor()->has($restaurant)->create();
     }
