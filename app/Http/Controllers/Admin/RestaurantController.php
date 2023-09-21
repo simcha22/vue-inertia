@@ -55,7 +55,7 @@ class RestaurantController extends Controller
                 'address' => $validated['address'],
             ]);
 
-            //$user->notify(new RestaurantOwnerInvitation($validated['restaurant_name']));
+            $user->notify(new RestaurantOwnerInvitation($validated['restaurant_name']));
 
         });
 
