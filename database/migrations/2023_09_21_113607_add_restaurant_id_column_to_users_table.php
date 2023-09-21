@@ -12,7 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            //
+            $table->foreignIdFor(\App\Models\Restaurant::class)
+                ->after('id')
+                ->nullable()
+                ->constrained();
         });
     }
 

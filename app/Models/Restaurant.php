@@ -27,4 +27,10 @@ class Restaurant extends Model
     {
         return $this->hasMany(Category::class);
     }
+
+    public function staff(): HasMany
+    {
+        return $this->hasMany(User::class);
+    }
+
 }
